@@ -25,6 +25,21 @@ to-do-lists: {
     ]
 }
 
+logic design
+
+toDos
+    create Category
+    delete Category
+    saveToLocalStorage
+    updateItem
+    moveItem 
+
+category
+    create list
+    delete list
+
 
 */
+
+
 

@@ -1,6 +1,6 @@
 
 
-class item{
+class Item{
     #itemTitle;
     #description;
     #notes;
@@ -70,11 +70,6 @@ class item{
         return this.#itemId;
     }
 
-    set itemId(itemId){
-        this.#itemId = itemId;
-        this.#save();
-    }
-
     get importance(){
         return this.#importance;
     }
@@ -114,7 +109,7 @@ class item{
 }
 
 
-export default item;
+export default Item;
 
 
 

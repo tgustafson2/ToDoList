@@ -90,7 +90,7 @@ class Item{
     }
 
 
-    toJSON(){
+    toObject(){
         return {
             itemTitle: this.#itemTitle,
             description: this.#description,

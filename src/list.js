@@ -8,9 +8,8 @@ class List{
     constructor(listName, id = crypto.randomUUID(), items, saveFn){
         this.#listName = listName;
         this.#listId = id;
-        this.#items = [];
-        items.forEach(element => {
-            this.#items.push(new Item(element.itemTitle, element.description, element.notes, element.dueDateTime, element.done, element.itemId, element.importance, saveFn))
+        this.#items = items.map(element => {
+            return new Item(element.itemTitle, element.description, element.notes, element.dueDateTime, element.done, element.itemId, element.importance, saveFn);
         });
         this.#saveFn = saveFn;
     }
@@ -37,12 +36,15 @@ class List{
         this.#saveFn();
     }
 
-    toJSON(){
-        jsonItems = this.#items.map(item => item.toJSON());
+    toObject(){
+
+        let itemsObj = this.#items.map(item =>{
+            return item.toObject();
+        })
         return {
             listName: this.#listName,
             listId: this.#listId,
-            items: jsonItems
+            items: itemsObj
         }
     }
 };

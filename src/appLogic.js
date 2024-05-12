@@ -7,10 +7,11 @@
 //get item info
 
 
-let toDoLists  =  localStorage.getItem("to-do-lists") === null ? JSON.parse(localStorage.getItem("to-do-lists")) : { categories:[] };
+let toDoLists  =  localStorage.getItem("to-do-lists") !== null ? JSON.parse(localStorage.getItem("to-do-lists")) : { categories : [] };
 
 function saveData(){
-    localStorage.setItem("to-do-lists", JSON.stringify(toDoLists));
+    console.log(JSON.stringify(toDoLists));
+    // localStorage.setItem("to-do-lists", JSON.stringify(toDoLists)); commented out for testing
 }
 
 function getItem(itemId){//get all details for to do item
@@ -28,29 +29,50 @@ function getItem(itemId){//get all details for to do item
 }
 
 function setItem(itemId, newItem){//set to do item
-    getItem(itemId) = newItem;
+    toDoLists.categories.forEach(category => {
+        category.lists.forEach(list =>{
+            list.forEach(item =>{
+                if(item.itemId === itemId){
+                    item = newItem;
+                }
+            })
+        })        
+    });
+    saveData();
 }
 
 function createItem(parentId, itemTitle, description, notes, dueDateTime, done, importance){//add to do item
-    toDoLists.categories.find(elem => elem.categoryId === categoryId).lists
-        .find(elem => elem.listId === listId).items.push({
-            itemTitle,
-            description,
-            notes,
-            dueDateTime,
-            done,
-            itemId: crypto.randomUUID(),
-            importance
-        });
+    toDoLists.categories.forEach(category => {
+        category.lists.forEach(list =>{
+            if(list.listId === parentId){
+                list.items.push({itemTitle, description, notes, dueDateTime, done, itemId:crypto.randomUUID(), importance})
+            }
+        })
+    });
+    saveData();
 }
 
 
-function getCategory(){//get category information and list names
-    
+function getCategory(categoryId){//get category information and list names
+    let result;
+    toDoLists.categories.forEach(category =>{
+        if(category.categoryId === categoryId){
+            let listInfo = category.lists.map(list => {
+                return {listName: list.listName, listId: list.listId};
+            });
+            result = { categoryName : category.categoryName, lists: listInfo};
+        }
+    })
+    return result;
 }
 
-function setCategory(){//set category name
-
+function setCategory(categoryId, newName){//set category name
+    toDoLists.categories.forEach( category => {
+        if(category.categoryId === categoryId){
+            category.categoryName = newName;
+        }
+    })
+    saveData();
 }
 
 function createCategory(categoryName){//add category
@@ -59,19 +81,51 @@ function createCategory(categoryName){//add category
         categoryId: crypto.randomUUID(),
         lists:[]
     });
+    saveData();
 }
 
-function getList(){
-
+function getCategories(){
+    let result = [];
+    toDoLists.categories.forEach(category => {
+        let lists = [];
+        category.lists.forEach( lists =>{
+            lists.push({listName: list.listName, listId: list.listId})
+        })
+        result.push({categoryName: category.categoryName, categoryId: category.categoryId, lists});
+    })
+    return result;
 }
 
-function setList(){
+function getList(listId){//get list name and item titles
+    let result;
+    toDoLists.categories.forEach(category => {
+        category.forEach(list => {
+            if(list.listId == listId){
+                let toDos = list.items.map( item =>{
+                    return {itemTitle:item.itemTitle, itemId: item.itemId};
+                })
+                result = {list:list.listName, items:toDos};
+            }
+        })
+    })
+    return result;
+}
 
+function setList(listId, newName){
+    toDoLists.categories.forEach( category =>{
+        category.forEach( list =>{
+            if(list.listId == listId){
+                list.listName = newName;
+            }
+        });
+    });
+    saveData();
 }
 
 function createList(categoryId, listName){
     toDoLists.categories.find(elem => elem.categoryId === categoryId)
         .push({listName, listId : crypto.randomUUID(), items:[] });
+    saveData();
 }
 
 function getDueToday(){
@@ -88,9 +142,43 @@ function getDueToday(){
 }
 
 function getDueWeek(){
-
+    let toDos = [];
+    toDoLists.categories.forEach(category => {
+        category.lists.forEach(list =>{
+            list.forEach(item =>{
+                if(item.dueDateTime >= today && item.dueDateTime<=today+7){
+                    toDos.push(item);
+                }
+            })
+        })        
+    });
 }
 
-function getImportance(){
+function getImportantToDos(){
+    let toDos = [];
+    toDoLists.categories.forEach(category => {
+        category.lists.forEach(list =>{
+            list.forEach(item =>{
+                if(item.importance === "High"){
+                    toDos.push(item);
+                }
+            })
+        })        
+    });
+}
 
+module.exports = {
+    getItem,
+    setItem,
+    createItem,
+    getCategory,
+    setCategory,
+    createCategory,
+    getCategories,
+    getList,
+    setList,
+    createList,
+    getDueToday,
+    getDueWeek,
+    getImportantToDos
 }

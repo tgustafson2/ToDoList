@@ -41,6 +41,9 @@ category
 
 */
 
+import "./style.css";
+import * as Display from "./displayLogic";
 
+// Display.firstLoad();
 
 

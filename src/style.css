@@ -1,108 +1,305 @@
-:root{
-    --header-height:64px;
-    --background-color: #f8f9fa;
-    --text-color: #fff;
-    --accent-background: #343a40;
-    --button-color: #007bff;
-    --button-hover: #0056b3;
-}
-
-*{
+body {
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    background-color: #f4f4f4;
 }
 
-body{
-    font-family: Arial, Helvetica, sans-serif;
-    min-height: 100vh;
-    width: 100vw;
-}
-
-.header{
-    height: var(--header-height);
-    background-color: var(--accent-background);
-    color: var(--text-color);
-    padding: 10px 20px;
-    font-size: 24px;
+header {
+    background-color: #4CAF50;
+    color: white;
     text-align: center;
+    padding: 1rem 0;
 }
 
-.page-container{
-    width: min(100vw,1800px);
-    height: calc(100vh - var(--header-height));
-    margin-left: auto;
-    margin-right: auto;
-    display: grid;
-    grid-template-columns: 250px 1fr;
-}
-
-.sidebar{
-    width: 250px;
-    background-color: var(--accent-background);
-    color: var(--text-color);
+.container {
+    display: flex;
+    max-width: 1600px;
+    margin: 0 auto;
     padding: 20px;
 }
 
-.sidebar h2 {
-    margin-bottom: 20px;
+.sidebar {
+    flex: 1;
+    background: #333;
+    color: white;
+    padding: 20px;
+    margin-right: 20px;
 }
 
-.sidebar ul{
-    list-style-type: none;
-    padding: 0;
-}
-
-.sidebar li{
-    margin-bottom: 10px;
-}
-
-.sidebar a {
-    color:var(--text-color);
+.sidebar h3 a{
     text-decoration: none;
-}
-
-.content {
-    background-color: var(--background-color);
-    padding: 20px;
-}
-
-.content h1{
-    margin-bottom: 20px;
-}
-
-.list {
-    margin-bottom: 20px;
-}
-
-.list h2{
-    margin-bottom: 10px;
-}
-
-.list ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.list li {
-    margin-bottom: 10px;
-}
-
-.button {
-    background-color: var(--button-color);
-    color: var(--text-color);
-    padding: 10px 20px;
-    border: none;
+    color: white;
+    padding: 5px;
+    display: block;
     border-radius: 5px;
-    cursor: pointer;
+}
+
+.sidebar h3 a:hover{
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+.sidebar ul {
+    list-style-type: none; /* Remove default list styling */
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 5px 0;
+}
+
+.sidebar ul li a {
     text-decoration: none;
+    color: white;
+    padding: 5px;
+    display: block;
+    border-radius: 5px;
 }
 
-.button:hover {
-    background-color: var(--button-hover);
+.sidebar ul li a:hover {
+    background-color: #f0f0f0;
+    color: #000;
 }
 
-.task {
+.sidebar .sidebar-top {
+    margin-bottom: 20px;
+}
+
+.sidebar .sidebar-top p {
+    margin: 0;
+}
+
+.sidebar .sidebar-top a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 10px 0;
+}
+
+.sidebar .categories {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.sidebar .category {
+    background: #444;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.sidebar .category h3 {
+    margin: 0 0 10px 0;
+}
+
+.sidebar .category ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar .category ul li {
+    padding: 5px 0;
+}
+
+.sidebar button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin-top: 20px;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 5px;
+}
+
+.sidebar button:hover {
+    background: #45a049;
+}
+
+.main {
+    flex: 3;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.main .tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.main .tabs button {
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    background: #f4f4f4;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.main .tabs button:hover {
+    background: #ddd;
+}
+
+.main .lists {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.main .list,
+.main .today,
+.main .this-week {
+    background: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.main .list h2,
+.main .today h2,
+.main .this-week h2 {
+    margin: 0 0 10px 0;
+}
+
+.main .task {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.main .task a{
+    text-decoration: none;
+    color: inherit;
     
 }
 
+.main .task .delete-task{
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    padding-left: 5px;
+}
+
+.delete-icon{
+    width: 24px;
+    height: 24px;
+}
+
+.main .task:last-child {
+    border-bottom: none;
+}
+
+.main .task input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.main .task .task-title {
+    text-align: left;
+}
+
+.main .task .due-date {
+    text-align: right;
+}
+
+.add-task {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+    width: auto;
+}
+
+.add-task:hover {
+    background: #45a049;
+}
+
+
+.alert-modal {
+    display: none; /* Hidden by default */
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4); 
+    align-items: center;
+    justify-content: center;
+}
+
+.alert-content {
+    background-color: white;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.alert-content h2 {
+    margin-top: 0;
+}
+
+.alert-content label {
+    display: block;
+    margin: 10px 0 5px 0;
+    text-align: left;
+}
+
+.alert-content input[type="text"],
+.alert-content textarea,
+.alert-content input[type="date"],
+.alert-content select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.alert-content textarea {
+    height: 60px;
+    resize: vertical;
+}
+
+.alert-buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.alert-buttons button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.alert-buttons button:hover {
+    background: #45a049;
+}
+
+.alert-buttons #cancel-alert,
+.alert-buttons #cancel-todo-alert {
+    background: #f44336;
+}
+
+.alert-buttons #cancel-alert:hover,
+.alert-buttons #cancel-todo-alert:hover {
+    background: #e53935;
+}

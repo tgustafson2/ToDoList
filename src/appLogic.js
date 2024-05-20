@@ -6,19 +6,33 @@
 //get lists and items that are high importance
 //get item info
 
+import { format, addDays, addMinutes } from "date-fns";
 
-let toDoLists  =  localStorage.getItem("to-do-lists") !== null ? JSON.parse(localStorage.getItem("to-do-lists")) : { categories : [] };
+
+let toDoLists  =  localStorage.getItem("to-do-lists") !== null ? JSON.parse(localStorage.getItem("to-do-lists"))
+         : { categories : [{categoryName: "Work", lists:[]},{categoryName: "Hobbies", lists:[]},{categoryName: "Home", lists:[]}] };
 
 function saveData(){
     console.log(JSON.stringify(toDoLists));
-    // localStorage.setItem("to-do-lists", JSON.stringify(toDoLists)); commented out for testing
+    localStorage.setItem("to-do-lists", JSON.stringify(toDoLists));
+}
+
+function removeItem(itemId){
+    for(let i=0; i<toDoLists.categories.length; i++){
+        for(let j=0; j<toDoLists.categories[i].lists.length; j++){
+            toDoLists.categories[i].lists[j].items = toDoLists.categories[i].lists[j].items.filter(item =>{
+                 return item.itemId != itemId;
+            })
+        }
+    }
+    saveData();
 }
 
 function getItem(itemId){//get all details for to do item
     let result;
     toDoLists.categories.forEach(category => {
         category.lists.forEach(list =>{
-            list.forEach(item =>{
+            list.items.forEach(item =>{
                 if(item.itemId === itemId){
                     result = item;
                 }
@@ -29,69 +43,67 @@ function getItem(itemId){//get all details for to do item
 }
 
 function setItem(itemId, newItem){//set to do item
-    toDoLists.categories.forEach(category => {
-        category.lists.forEach(list =>{
-            list.forEach(item =>{
-                if(item.itemId === itemId){
-                    item = newItem;
+    console.log(itemId);
+    console.log(newItem);
+    
+
+    for(let i=0; i<toDoLists.categories.length; i++){
+        for(let j=0; j<toDoLists.categories[i].lists.length; j++){
+            for(let k=0; k<toDoLists.categories[i].lists[j].items.length; k++){
+                if(toDoLists.categories[i].lists[j].items[k].itemId == itemId){
+                    newItem.done = toDoLists.categories[i].lists[j].items[k].done;
+                    if(toDoLists.categories[i].lists[j].items[k]!==newItem.dueDateTime){
+                        newItem.dueDateTime = format(addMinutes(newItem.dueDateTime, new Date().getTimezoneOffset()), "MM/dd/yyyy")
+                    }
+                    toDoLists.categories[i].lists[j].items[k] = newItem;
                 }
-            })
-        })        
-    });
+            }
+        }
+    }
     saveData();
 }
 
-function createItem(parentId, itemTitle, description, notes, dueDateTime, done, importance){//add to do item
+function createItem(parentId, itemTitle, notes, dueDateTime, done, importance){//add to do item
+    let newItemId;
+    // console.log(format(addMinutes(dueDateTime, new Date().getTimezoneOffset()), "MM/dd/yyyy"));
+    console.log("List to add to id " + parentId);
     toDoLists.categories.forEach(category => {
         category.lists.forEach(list =>{
-            if(list.listId === parentId){
-                list.items.push({itemTitle, description, notes, dueDateTime, done, itemId:crypto.randomUUID(), importance})
+            if(list.listId == parentId){
+                newItemId = crypto.randomUUID();
+                list.items.push({itemTitle, notes, dueDateTime : format(addMinutes(dueDateTime, new Date().getTimezoneOffset()), "MM/dd/yyyy"), done, itemId:newItemId, importance})
             }
         })
     });
     saveData();
-}
-
-
-function getCategory(categoryId){//get category information and list names
-    let result;
-    toDoLists.categories.forEach(category =>{
-        if(category.categoryId === categoryId){
-            let listInfo = category.lists.map(list => {
-                return {listName: list.listName, listId: list.listId};
-            });
-            result = { categoryName : category.categoryName, lists: listInfo};
-        }
-    })
-    return result;
-}
-
-function setCategory(categoryId, newName){//set category name
-    toDoLists.categories.forEach( category => {
-        if(category.categoryId === categoryId){
-            category.categoryName = newName;
-        }
-    })
-    saveData();
-}
-
-function createCategory(categoryName){//add category
-    toDoLists.categories.push({
-        categoryName,
-        categoryId: crypto.randomUUID(),
-        lists:[]
-    });
-    saveData();
+    return newItemId;
 }
 
 function getCategories(){
     let result = [];
     toDoLists.categories.forEach(category => {
         let lists = [];
-        category.lists.forEach( lists =>{
+        category.lists.forEach( list =>{
             lists.push({listName: list.listName, listId: list.listId})
         })
-        result.push({categoryName: category.categoryName, categoryId: category.categoryId, lists});
+        result.push({categoryName: category.categoryName, lists});
+    })
+    return result;
+}
+
+function getCategoryLists(categoryName){
+    let result = [];
+    toDoLists.categories.forEach(category =>{
+        if(category.categoryName == categoryName){
+            
+            category.lists.forEach(list => {
+                let listTemp = [];
+                list.items.forEach(item =>{
+                    listTemp.push({itemTitle: item.itemTitle, itemId: item.itemId, done: item.done, dueDateTime: item.dueDateTime})
+                })
+                result.push({listName: list.listName, listId: list.listId, items: listTemp});
+            })
+        }
     })
     return result;
 }
@@ -99,12 +111,10 @@ function getCategories(){
 function getList(listId){//get list name and item titles
     let result;
     toDoLists.categories.forEach(category => {
-        category.forEach(list => {
+        category.lists.forEach(list => {
             if(list.listId == listId){
-                let toDos = list.items.map( item =>{
-                    return {itemTitle:item.itemTitle, itemId: item.itemId};
-                })
-                result = {list:list.listName, items:toDos};
+                
+                result = {listName:list.listName, items:list.items};
             }
         })
     })
@@ -122,36 +132,45 @@ function setList(listId, newName){
     saveData();
 }
 
-function createList(categoryId, listName){
-    toDoLists.categories.find(elem => elem.categoryId === categoryId)
-        .push({listName, listId : crypto.randomUUID(), items:[] });
+function createList(categoryName, listName){
+    console.log(categoryName);
+    console.log(listName);
+    let newId = crypto.randomUUID();
+    toDoLists.categories.find(elem => elem.categoryName === categoryName).lists
+        .push({listName, listId : newId, items:[] });
     saveData();
+    return newId;
 }
 
 function getDueToday(){
     let toDos = [];
     toDoLists.categories.forEach(category => {
         category.lists.forEach(list =>{
-            list.forEach(item =>{
-                if(item.dueDateTime === today){
+            list.items.forEach(item =>{
+                // console.log(format(new Date(item.dueDateTime).toLocaleDateString(), "MM/dd/yyyy"));
+                // console.log(format(new Date(), "MM/dd/yyyy"));
+                if(format(item.dueDateTime, "MM/dd/yyyy") === format(new Date(), "MM/dd/yyyy")){
                     toDos.push(item);
                 }
             })
         })        
     });
+    return toDos;
 }
 
 function getDueWeek(){
     let toDos = [];
     toDoLists.categories.forEach(category => {
         category.lists.forEach(list =>{
-            list.forEach(item =>{
-                if(item.dueDateTime >= today && item.dueDateTime<=today+7){
+            list.items.forEach(item =>{
+                if(format(item.dueDateTime, "MM/dd/yyyy") >= format(new Date(), "MM/dd/yyyy") &&
+                format(item.dueDateTime, "MM/dd/yyyy") <= format(addDays(new Date(),7), "MM/dd/yyyy")){
                     toDos.push(item);
                 }
             })
         })        
     });
+    return toDos;
 }
 
 function getImportantToDos(){
@@ -167,14 +186,13 @@ function getImportantToDos(){
     });
 }
 
-module.exports = {
+export {
     getItem,
     setItem,
     createItem,
-    getCategory,
-    setCategory,
-    createCategory,
+    removeItem,
     getCategories,
+    getCategoryLists,
     getList,
     setList,
     createList,

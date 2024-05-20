@@ -3,33 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToDoList</title>
+    <title>Get It Done</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav class="header">Get it Done</nav>
-    <div class="page-container">
+    <header>
+        <h1>Get It Done</h1>
+    </header>
+    <div class="container">
         <div class="sidebar">
-            <ul>
-               <li><a href="">Today</a></li> 
-               <li><a href="">Next 7 days</a></li>
-               <li><a href="">Anytime</a></li>
-            </ul>
+            <div class="sidebar-top">
+                <p><a href="#" class = "today-tasks">Today</a></p>
+                <p><a href="#" class = "this-week-tasks">This Week</a></p>
+            </div>
             <div class="categories">
-                <div class="category">
-                    Home
+                <div class="category" id="work">
+                    <h3><a href="">Work</a></h3>
+                    <ul class="lists">
+                        
+                    </ul>
                 </div>
-                <div class="category">
-                    Hobby
+                <div class="category" id="hobbies">
+                    <h3><a href="">Hobbies</a></h3>
+                    <ul class="lists">
+                        
+                    </ul>
                 </div>
-                <div class="category">
-                    Work
+                <div class="category" id="home">
+                    <h3><a href="">Home</a></h3>
+                    <ul class="lists">
+                        
+                    </ul>
+                </div>
+            </div>
+            <button id = "add-list-btn">Add New List</button>
+        </div>
+        <div class="main" currDisplay="Today">
+
+            <div class="lists">
+                <div class="list">
+                    <h2>List Title 1</h2>
+                    <div class="task">
+                        <input type="checkbox">
+                        <span class="task-title">Task 1</span>
+                        <span class="due-date">Due Date</span>
+                        <button class="delete-task" onclick="deleteTask(this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M3 6h18v2H3V6zm2 4v10c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V10H5zm3 10c0 .55-.45 1-1 1s-1-.45-1-1V10h2v10zm4 0c0 .55-.45 1-1 1s-1-.45-1-1V10h2v10zm4 0c0 .55-.45 1-1 1s-1-.45-1-1V10h2v10z"/></svg>
+                        </button>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox">
+                        <span class="task-title">Task 2</span>
+                        <span class="due-date">Due Date</span>
+                        <button class="delete-task" onclick="deleteTask(this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M3 6h18v2H3V6zm2 4v10c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V10H5zm3 10c0 .55-.45 1-1 1s-1-.45-1-1V10h2v10zm4 0c0 .55-.45 1-1 1s-1-.45-1-1V10h2v10zm4 0c0 .55-.45 1-1 1s-1-.45-1-1V10h2v10z"/></svg>
+                        </button>
+                    </div>
+                    <button class="add-task">Add Task</button>
+                </div>
+                <div class="list">
+                    <h2>List Title 2</h2>
+                    <div class="task">
+                        <input type="checkbox">
+                        <span class="task-title">Task 1</span>
+                        <span class="due-date">Due Date</span>
+                        <button class="delete-task" onclick="deleteTask(this)">
+                            <img src="trash-can-svgrepo-com.svg" alt="Delete" class="delete-icon">
+                        </button>
+                    </div>
+                    <div class="task">
+                        <input type="checkbox">
+                        <span class="task-title">Task 2</span>
+                        <span class="due-date">Due Date</span>
+                        <button class="delete-task" onclick="deleteTask(this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M3 6h18v2H3V6zm2 4v10c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V10H5zm3 10c0 .55-.45 1-1 1s-1-.45-1-1V10h2v10zm4 0c0 .55-.45 1-1 1s-1-.45-1-1V10h2v10zm4 0c0 .55-.45 1-1 1s-1-.45-1-1V10h2v10z"/></svg>
+                        </button>
+                    </div>
+                    <button class="add-task">Add Task</button>
                 </div>
             </div>
         </div>
-        <div class="content">
-            
-        </div>
-
     </div>
+    <div id="alert-modal" class="alert-modal">
+        <div class="alert-content">
+            <h2>Create New List</h2>
+            <label for="new-list-name">Enter List Name:</label>
+            <input type="text" id="new-list-name" name="new-list-name">
+            
+            <label for="list-category">Select Category:</label>
+            <select id="list-category" name="list-category">
+                <option value="work">Work</option>
+                <option value="hobbies">Hobbies</option>
+                <option value="home">Home</option>
+            </select>
+            
+            <div class="alert-buttons">
+                <button id="submit-list" >Submit</button>
+                <button id="cancel-alert" >Cancel</button>
+            </div>
+        </div>
+    </div>
+    <div id="todo-alert-modal" class="alert-modal" listid="">
+        <div class="alert-content">
+            <h2>Create New To-Do Item</h2>
+            <label for="task-title">Task Title:</label>
+            <input type="text" id="task-title" name="task-title">
+            
+            <label for="task-notes">Task Notes:</label>
+            <textarea id="task-notes" name="task-notes"></textarea>
+            
+            <label for="due-date">Due Date:</label>
+            <input type="date" id="due-date" name="due-date">
+            
+            <label for="importance">Importance:</label>
+            <select id="importance" name="importance" value="medium">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+            
+            <div class="alert-buttons">
+                <button id="submit-todo" >Submit</button>
+                <button id="cancel-todo-alert" >Cancel</button>
+            </div>
+        </div>
+    </div>
+    <div id="edit-task-modal" class="alert-modal" listid="" itemid="">
+        <div class="alert-content">
+            <h2>Edit Task</h2>
+            <label for="edit-task-title">Task Title:</label>
+            <input type="text" id="edit-task-title" name="edit-task-title">
+            
+            <label for="edit-task-notes">Task Notes:</label>
+            <textarea id="edit-task-notes" name="edit-task-notes"></textarea>
+            
+            <label for="edit-due-date">Due Date:</label>
+            <input type="date" id="edit-due-date" name="edit-due-date">
+            
+            <label for="edit-importance">Importance:</label>
+            <select id="edit-importance" name="edit-importance">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+            
+            <div class="alert-buttons">
+                <button id="submit-edit-task" >Submit</button>
+                <button id="cancel-edit-task-alert" >Close</button>
+            </div>
+        </div>
+    </div>
+
+
 </body>
 </html>
+

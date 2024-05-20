@@ -42,8 +42,15 @@ category
 */
 
 import "./style.css";
+import * as AppLogic from "./appLogic";
 import * as Display from "./displayLogic";
+import * as MainContent from "./mainContent";
+import * as Sidebar from "./sidebar";
+import * as Modals from "./modals";
+
 
 // Display.firstLoad();
-
+Sidebar.initialize(AppLogic.getCategories());
+Modals.initialize();
+MainContent.displayToday(AppLogic.getDueToday());
 

@@ -13,7 +13,7 @@ let toDoLists;
 
 function load(){
     toDoLists  =  localStorage.getItem("to-do-lists") !== null ? JSON.parse(localStorage.getItem("to-do-lists"))
-         : { categories : [{categoryName: "Work", lists:[]},{categoryName: "Hobbies", lists:[]},{categoryName: "Home", lists:[]}] };
+         : { categories : [{categoryName: "work", lists:[]},{categoryName: "hobbies", lists:[]},{categoryName: "home", lists:[]}] };
 }
 
 function saveData(){

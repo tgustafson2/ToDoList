@@ -1,13 +1,36 @@
+:root{
+    --header-background-color: #4CAF50;
+    --text-offset-color: white;
+    --sidebar-container-background: #333;
+    --page-background: #f4f4f4;
+    --sidebar-hover-background: #f0f0f0;
+    --sidebar-hover-color: #000;
+    --category-background-color: #444;
+    --button-accent-color: #45a049;
+    --main-background-color: white;
+    --modal-background-color: white;
+    --to-do-item-background: #f9f9f9;
+    --to-do-item-separator: #eee;
+    --modal-border: #888;
+    --content-border: #ddd;
+    --close-modal-btn-color: #f44336;
+    --close-modal-btn-hover: #e53935;
+}
+
+
+
+
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: var(--page-background);
 }
 
 header {
-    background-color: #4CAF50;
-    color: white;
+    background-color: var(--header-background-color);
+    color: var(--text-offset-color);
     text-align: center;
     padding: 1rem 0;
 }
@@ -21,23 +44,23 @@ header {
 
 .sidebar {
     flex: 1;
-    background: #333;
-    color: white;
+    background: var(--sidebar-container-background);
+    color: var(--text-offset-color);
     padding: 20px;
     margin-right: 20px;
 }
 
 .sidebar h3 a{
     text-decoration: none;
-    color: white;
+    color: var(--text-offset-color);
     padding: 5px;
     display: block;
     border-radius: 5px;
 }
 
 .sidebar h3 a:hover{
-    background-color: #f0f0f0;
-    color: #000;
+    background-color: var(--sidebar-hover-background);
+    color: var(--sidebar-hover-color);
 }
 
 .sidebar ul {
@@ -51,15 +74,15 @@ header {
 
 .sidebar ul li a {
     text-decoration: none;
-    color: white;
+    color: var(--text-offset-color);
     padding: 5px;
     display: block;
     border-radius: 5px;
 }
 
 .sidebar ul li a:hover {
-    background-color: #f0f0f0;
-    color: #000;
+    background-color: var(--sidebar-hover-background);
+    color: var(--sidebar-hover-color);
 }
 
 .sidebar .sidebar-top {
@@ -71,7 +94,7 @@ header {
 }
 
 .sidebar .sidebar-top a {
-    color: white;
+    color: var(--text-offset-color);
     text-decoration: none;
     display: block;
     padding: 10px 0;
@@ -84,7 +107,7 @@ header {
 }
 
 .sidebar .category {
-    background: #444;
+    background: var(--category-background-color);
     padding: 10px;
     border-radius: 5px;
 }
@@ -104,8 +127,8 @@ header {
 }
 
 .sidebar button {
-    background: #4CAF50;
-    color: white;
+    background: var(--header-background-color);
+    color: var(--text-offset-color);
     border: none;
     padding: 10px;
     margin-top: 20px;
@@ -115,33 +138,15 @@ header {
 }
 
 .sidebar button:hover {
-    background: #45a049;
+    background: var(--button-accent-color);
 }
 
 .main {
     flex: 3;
-    background: white;
+    background: var(--main-background-color);
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-.main .tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.main .tabs button {
-    padding: 10px 20px;
-    border: 1px solid #ddd;
-    background: #f4f4f4;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.main .tabs button:hover {
-    background: #ddd;
 }
 
 .main .lists {
@@ -153,9 +158,9 @@ header {
 .main .list,
 .main .today,
 .main .this-week {
-    background: #f9f9f9;
+    background: var(--to-do-item-background);
     padding: 20px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--content-border);
     border-radius: 5px;
 }
 
@@ -170,7 +175,7 @@ header {
     grid-template-columns: auto 1fr auto auto;
     align-items: center;
     padding: 5px 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--to-do-item-separator);
 }
 
 .main .task a{
@@ -209,8 +214,8 @@ header {
 }
 
 .add-task {
-    background: #4CAF50;
-    color: white;
+    background: var(--header-background-color);
+    color: var(--modal-background-color);
     border: none;
     padding: 5px 10px;
     cursor: pointer;
@@ -220,7 +225,7 @@ header {
 }
 
 .add-task:hover {
-    background: #45a049;
+    background: var(--button-accent-color);
 }
 
 
@@ -239,10 +244,10 @@ header {
 }
 
 .alert-content {
-    background-color: white;
+    background-color: var(--modal-background-color);
     margin: auto;
     padding: 20px;
-    border: 1px solid #888;
+    border: 1px solid var(--modal-border);
     width: 300px;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
     border-radius: 10px;
@@ -266,7 +271,7 @@ header {
     width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--content-border);
     border-radius: 5px;
     box-sizing: border-box;
 }
@@ -282,8 +287,8 @@ header {
 }
 
 .alert-buttons button {
-    background: #4CAF50;
-    color: white;
+    background: var(--header-background-color);
+    color: var(--text-offset-color);
     border: none;
     padding: 10px 20px;
     cursor: pointer;
@@ -291,15 +296,15 @@ header {
 }
 
 .alert-buttons button:hover {
-    background: #45a049;
+    background: var(--button-accent-color);
 }
 
 .alert-buttons #cancel-alert,
 .alert-buttons #cancel-todo-alert {
-    background: #f44336;
+    background: var(--close-modal-btn-color);
 }
 
 .alert-buttons #cancel-alert:hover,
 .alert-buttons #cancel-todo-alert:hover {
-    background: #e53935;
+    background: var(--close-modal-btn-hover);
 }

@@ -9,8 +9,12 @@
 import { format, addDays, addMinutes } from "date-fns";
 
 
-let toDoLists  =  localStorage.getItem("to-do-lists") !== null ? JSON.parse(localStorage.getItem("to-do-lists"))
-         : { categories : [{categoryName: "Work", lists:[]},{categoryName: "Hobbies", lists:[]},{categoryName: "Home", lists:[]}] };
+let toDoLists;
+
+function load(){
+    toDoLists  =  localStorage.getItem("to-do-lists") !== null ? JSON.parse(localStorage.getItem("to-do-lists"))
+         : { categories : [{categoryName: "work", lists:[]},{categoryName: "hobbies", lists:[]},{categoryName: "home", lists:[]}] };
+}
 
 function saveData(){
     console.log(JSON.stringify(toDoLists));
@@ -121,16 +125,6 @@ function getList(listId){//get list name and item titles
     return result;
 }
 
-function setList(listId, newName){
-    toDoLists.categories.forEach( category =>{
-        category.forEach( list =>{
-            if(list.listId == listId){
-                list.listName = newName;
-            }
-        });
-    });
-    saveData();
-}
 
 function createList(categoryName, listName){
     console.log(categoryName);
@@ -194,9 +188,9 @@ export {
     getCategories,
     getCategoryLists,
     getList,
-    setList,
     createList,
     getDueToday,
     getDueWeek,
-    getImportantToDos
+    getImportantToDos,
+    load
 }
